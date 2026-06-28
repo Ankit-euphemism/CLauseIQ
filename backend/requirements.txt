@@ -1,0 +1,12 @@
+fastapi
+fastapi[standard]
+uvicorn[standard]
+pydantic-settings
+pdfplumber
+python-docx
+requests
+sentence-transformers
+faiss-cpu
+numpy
+python-multipart
+openrouter
