@@ -3,6 +3,9 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 from app.core.config import settings
 
+"""
+Embedding service for converting text into vector representations and store in FAISS index.
+"""
 model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")  # Fast + good quality
 
 def chunk_text(text: str) -> list[str]:

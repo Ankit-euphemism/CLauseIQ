@@ -1,7 +1,9 @@
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from app.core.config import settings
-
+"""
+Retriever service for finding similar chunks based on a question.
+"""
 model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2") # Fast + good quality
 
 def retrieve_chunks(question: str, index, chunks: list[str]) -> list[str]:
