@@ -34,6 +34,11 @@
         box-shadow: 0 0 18px rgba(240, 28, 255, 0.55);
       }
 
+      .brand-mark-shape {
+        border-radius: 999px 999px 999px 2px;
+        transform: rotate(-8deg);
+      }
+
       .hero h1 {
         background: linear-gradient(
           90deg,
@@ -101,12 +106,12 @@
     <main class="w-full max-w-xl rounded-3xl p-5 bg-gradient-to-b from-white/4 to-white/2 shadow-2xl border border-white/8 backdrop-blur-2xl md:p-5">
       <section class="rounded-2xl p-7 bg-gradient-to-b from-slate-900/96 to-slate-950/98 border border-blue-400/16 shadow-lg shadow-black/45 shadow-inner md:p-7">
         <div class="flex items-center justify-center gap-2 mx-auto mb-5 px-3 py-2 rounded-full text-cyan-300 font-bold tracking-widest uppercase bg-slate-900/72 border border-cyan-300/14 shadow-glow">
-          <span class="w-4 h-4 rounded-full brand-mark" style="border-radius: 999px 999px 999px 2px; transform: rotate(-8deg);" aria-hidden="true"></span>
+          <span class="w-4 h-4 rounded-full brand-mark brand-mark-shape" aria-hidden="true"></span>
           ClauseIQ
         </div>
 
         <header class="mx-auto mb-7 text-center max-w-md">
-          <h1 class="text-3xl md:text-4xl lg:text-5xl leading-tight tracking-tight font-black">Smart Querying from Your Documents</h1>
+          <h1 class="text-3xl md:text-4xl lg:text-5xl leading-tight tr  acking-tight font-black">Smart Querying from Your Documents</h1>
           <p class="mt-3 text-slate-300 text-sm md:text-base leading-relaxed">
             Upload a PDF or DOCX, ask your questions, and get retrieval-based
             answers from the document contents.
