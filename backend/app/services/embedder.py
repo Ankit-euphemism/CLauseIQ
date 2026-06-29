@@ -7,7 +7,7 @@ from app.core.config import settings
 Embedding service for converting text into vector representations and store in FAISS index.
 """
 model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")  # Fast + good quality
-
+# chunk_text and build_index are used in the pipeline to prepare documents for retrieval.
 def chunk_text(text: str) -> list[str]:
     """Split text into overlapping chunks."""
     words = text.split()
@@ -20,7 +20,7 @@ def chunk_text(text: str) -> list[str]:
         if chunk.strip():
             chunks.append(chunk)
     return chunks
-
+# Build a FAISS index from the text chunks.
 def build_index(chunks: list[str]):
     """Embed all chunks → FAISS index."""
     embeddings = model.encode(chunks, show_progress_bar=False)
