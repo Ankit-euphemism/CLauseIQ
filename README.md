@@ -1,1 +1,1 @@
-# CLauseIQ Ret
+# CLauseIQ Retrieval System
