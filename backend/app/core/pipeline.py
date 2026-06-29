@@ -3,7 +3,7 @@ from app.services.document_loader import load_document_from_url, load_document_f
 from app.services.embedder import chunk_text, build_index
 from app.services.retriever import retrieve_chunks
 from app.services.llm import get_answer
-
+# Pipeline service that orchestrates the document loading, embedding, retrieval, and LLM answering process.
 def run_pipeline(
     questions: list[str],
     document_url: Optional[str] = None,

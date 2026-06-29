@@ -5,7 +5,7 @@ from app.core.pipeline import run_pipeline
 
 router = APIRouter()
 
-
+# Helper function to parse questions from JSON string and validate them
 def _parse_questions(raw_questions: str) -> list[str]:
     raw_questions = raw_questions.strip()
     if not raw_questions:
