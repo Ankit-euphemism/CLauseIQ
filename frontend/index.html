@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ClauseIQ</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+      /* Custom gradients and effects that need additional CSS */
+      body {
+        background:
+          radial-gradient(
+            circle at top,
+            rgba(87, 116, 255, 0.26),
+            transparent 28%
+          ),
+          radial-gradient(
+            circle at 20% 20%,
+            rgba(240, 28, 255, 0.18),
+            transparent 18%
+          ),
+          radial-gradient(
+            circle at 80% 15%,
+            rgba(43, 233, 255, 0.18),
+            transparent 20%
+          ),
+          linear-gradient(160deg, #0b1020, #171636 55%, #090d19 100%);
+        color-scheme: dark;
+      }
+
+      .brand-mark {
+        background: linear-gradient(135deg, #f01cff, #2be9ff);
+        box-shadow: 0 0 18px rgba(240, 28, 255, 0.55);
+      }
+
+      .hero h1 {
+        background: linear-gradient(
+          90deg,
+          #38bdf8 0%,
+          #8b5cf6 46%,
+          #d946ef 70%,
+          #2be9ff 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 28px rgba(107, 114, 255, 0.18);
+      }
+
+      .file-label {
+        background: linear-gradient(
+          90deg,
+          #f01cff,
+          #b44dff 45%,
+          #4e8cff 75%,
+          #2be9ff
+        );
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset, 0 16px 38px rgba(71, 24, 112, 0.45);
+        transition: transform 140ms ease, filter 140ms ease;
+      }
+
+      .file-label:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.05);
+      }
+
+      .submit-btn {
+        background: linear-gradient(
+          90deg,
+          #f01cff,
+          #c650ff 42%,
+          #5e8cff 72%,
+          #2be9ff
+        );
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset, 0 16px 38px rgba(71, 24, 112, 0.45);
+        transition: transform 140ms ease, filter 140ms ease;
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.05);
+      }
+
+      .submit-btn:active {
+        transform: translateY(0);
+      }
+
+      textarea::placeholder {
+        color: rgba(226, 232, 240, 0.42);
+      }
+
+      @media (max-width: 640px) {
+        body {
+          padding: 18px 12px;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex items-center justify-center px-4 py-8 font-sans text-slate-100 md:px-4 md:py-8">
+    <main class="w-full max-w-xl rounded-3xl p-5 bg-gradient-to-b from-white/4 to-white/2 shadow-2xl border border-white/8 backdrop-blur-2xl md:p-5">
+      <section class="rounded-2xl p-7 bg-gradient-to-b from-slate-900/96 to-slate-950/98 border border-blue-400/16 shadow-lg shadow-black/45 shadow-inner md:p-7">
+        <div class="flex items-center justify-center gap-2 mx-auto mb-5 px-3 py-2 rounded-full text-cyan-300 font-bold tracking-widest uppercase bg-slate-900/72 border border-cyan-300/14 shadow-glow">
+          <span class="w-4 h-4 rounded-full brand-mark" style="border-radius: 999px 999px 999px 2px; transform: rotate(-8deg);" aria-hidden="true"></span>
+          ClauseIQ
+        </div>
+
+        <header class="mx-auto mb-7 text-center max-w-md">
+          <h1 class="text-3xl md:text-4xl lg:text-5xl leading-tight tracking-tight font-black">Smart Querying from Your Documents</h1>
+          <p class="mt-3 text-slate-300 text-sm md:text-base leading-relaxed">
+            Upload a PDF or DOCX, ask your questions, and get retrieval-based
+            answers from the document contents.
+          </p>
+        </header>
+
+        <div class="grid gap-5">
+          <div class="grid gap-2">
+            <p class="m-0 mb-2 text-slate-300 text-xs font-bold tracking-widest uppercase">Document Upload</p>
+            <label class="file-label flex items-center justify-center gap-2 w-full min-h-14 px-4 py-3 rounded-xl text-base font-bold text-slate-900 cursor-pointer select-none transition-all duration-150 hover:shadow-lg hover:-translate-y-0.5" for="pdfFile">Upload Document</label>
+            <input
+              class="sr-only"
+              type="file"
+              id="pdfFile"
+              accept=".pdf,.docx"
+            />
+            <div class="file-meta text-center text-slate-300 text-sm" id="fileMeta">No file selected</div>
+            <p class="m-0 text-center text-slate-400 text-xs">
+              Upload PDF, DOCX or Word file for fetching data.
+            </p>
+          </div>
+
+          <div>
+            <p class="m-0 mb-2 text-slate-300 text-xs font-bold tracking-widest uppercase">Questions</p>
+            <textarea
+              id="questionsInput"
+              placeholder='["What is grace period?", "Is knee surgery covered?"]'
+              rows="5"
+              class="w-full resize-vertical min-h-40 border border-slate-500/14 rounded-2xl bg-slate-700/90 text-slate-100 p-4 text-sm outline-none shadow-inner shadow-slate-900/30 focus:border-cyan-400/50 focus:shadow-lg focus:shadow-cyan-400/12 transition-all"
+            ></textarea>
+          </div>
+
+          <button class="submit-btn w-full min-h-14 border-0 rounded-xl text-slate-900 font-inherit text-base font-bold cursor-pointer shadow-lg shadow-purple-900/45 transition-all duration-150 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0" onclick="submitQuery()">
+            Ask ClauseIQ
+          </button>
+        </div>
+
+        <section class="mt-2.5 pt-2.5 border-t border-slate-500/12" aria-live="polite">
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div>
+              <p class="m-0 mb-2 text-slate-300 text-xs font-bold tracking-widest uppercase">Answers Response</p>
+              <h2 class="m-0 text-base font-bold tracking-tight">Result Preview</h2>
+            </div>
+            <p class="m-0 text-slate-400 text-xs">
+              Formatted output appears here after submission.
+            </p>
+          </div>
+          <pre id="output" class="mt-5 p-4 min-h-20 rounded-xl border border-slate-500/12 bg-slate-950/52 text-blue-300 overflow-auto whitespace-pre-wrap break-words"></pre>
+        </section>
+      </section>
+    </main>
+
+    <script>
+      const fileInput = document.getElementById("pdfFile");
+      const fileMeta = document.getElementById("fileMeta");
+
+      fileInput.addEventListener("change", () => {
+        fileMeta.textContent = fileInput.files[0]
+          ? fileInput.files[0].name
+          : "No file selected";
+      });
+
+      async function submitQuery() {
+        const questionsRaw = document.getElementById("questionsInput").value;
+        const output = document.getElementById("output");
+
+        if (!fileInput.files[0]) {
+          alert("Upload a PDF or DOCX first!");
+          return;
+        }
+
+        // Build FormData — file + questions string
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+        formData.append("questions", questionsRaw); // JSON string
+
+        output.textContent = "Loading...";
+
+        try {
+          const response = await fetch(
+            "http://localhost:8000/api/v1/query/upload",
+            {
+              method: "POST",
+              body: formData,
+              // DON'T set Content-Type header — browser sets multipart boundary auto
+            },
+          );
+
+          const data = await response.json();
+          output.textContent = JSON.stringify(data, null, 2);
+        } catch (err) {
+          output.textContent = "Error: " + err.message;
+        }
+      }
+    </script>
+  </body>
+</html>
