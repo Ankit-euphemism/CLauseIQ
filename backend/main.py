@@ -17,5 +17,9 @@ app.include_router(router, prefix="/api/v1")
 
 # Health check — Render pings this to verify deploy success
 @app.get("/health")
-def health():
+async def health():
     return {"status": "ok", "app": "ClauseIQ"}
+
+@app.get("/")
+async def root():
+    return {"message": "Welcome to ClauseIQ Query System!"}
