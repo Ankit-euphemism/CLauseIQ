@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import router
+import uvicorn
 
 app = FastAPI(title="CLauseIQ Query System")
 
@@ -23,3 +24,7 @@ async def health():
 @app.get("/")
 async def root():
     return {"message": "Welcome to ClauseIQ Query System!"}
+
+
+def run():
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)
