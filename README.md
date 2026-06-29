@@ -171,19 +171,19 @@ OPENROUTER_MODEL="openrouter/auto"
 Run the API:
 
 ```bash
-uvicorn main:app --reload --host 127.0.0.1 --port 10000
+uvicorn main:app --reload --host 127.0.0.1 --port 8000
 ```
 
 The API will be available at:
 
 ```text
-http://127.0.0.1:10000
+http://127.0.0.1:8000
 ```
 
 Interactive API docs are available at:
 
 ```text
-http://127.0.0.1:10000/docs
+http://127.0.0.1:8000/docs
 ```
 
 ### Frontend
@@ -197,7 +197,7 @@ frontend/index.html
 Open it in a browser after the backend is running. The frontend currently sends requests to:
 
 ```text
-http://127.0.0.1:10000/api/v1/query/upload
+http://127.0.0.1:8000/api/v1/query/upload
 ```
 
 ## Configuration
@@ -219,7 +219,7 @@ The backend includes a Render service configuration in `backend/render.yml`.
 Expected deployment command:
 
 ```bash
-uvicorn main:app --host 0.0.0.0 --port 10000
+uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
 Set `OPENROUTER_API_KEY` in the deployment provider's environment settings. The `/health` endpoint can be used as the health check path.
