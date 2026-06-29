@@ -1,12 +1,12 @@
 import faiss
 import numpy as np
-from sentence_transformers import SentenceTransformer
 from app.core.config import settings
+from app.services.embedding_model import get_embedding_model
 
 """
 Embedding service for converting text into vector representations and store in FAISS index.
 """
-model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")  # Fast + good quality
+model = get_embedding_model()
 # chunk_text and build_index are used in the pipeline to prepare documents for retrieval.
 def chunk_text(text: str) -> list[str]:
     """Split text into overlapping chunks."""
