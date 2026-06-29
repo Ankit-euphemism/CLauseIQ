@@ -138,7 +138,7 @@
             <p class="m-0 mb-2 text-slate-300 text-xs font-bold tracking-widest uppercase">Questions</p>
             <textarea
               id="questionsInput"
-              placeholder='["What is grace period?", "Is knee surgery covered?"]'
+              placeholder='["What is grace period?", "Is knee surgery covered?"] or "What is the effective date of the contract?"'
               rows="5"
               class="w-full resize-vertical min-h-40 border border-slate-500/14 rounded-2xl bg-slate-700/90 text-slate-100 p-4 text-sm outline-none shadow-inner shadow-slate-900/30 focus:border-cyan-400/50 focus:shadow-lg focus:shadow-cyan-400/12 transition-all"
             ></textarea>
@@ -153,13 +153,13 @@
           <div class="flex items-start justify-between gap-3 mb-3">
             <div>
               <p class="m-0 mb-2 text-slate-300 text-xs font-bold tracking-widest uppercase">Answers Response</p>
-              <h2 class="m-0 text-base font-bold tracking-tight">Result Preview</h2>
+              <!-- <h2 class="m-0 text-base font-bold tracking-tight">Result Preview</h2> -->
             </div>
-            <p class="m-0 text-slate-400 text-xs">
+            <!-- <p class="m-0 text-slate-400 text-xs">
               Formatted output appears here after submission.
-            </p>
+            </p> -->
           </div>
-          <pre id="output" class="mt-5 p-4 min-h-20 rounded-xl border border-slate-500/12 bg-slate-950/52 text-blue-300 overflow-auto whitespace-pre-wrap break-words"></pre>
+          <div id="output" class="mt-5 p-4 min-h-20 rounded-xl border border-slate-500/12 bg-slate-950/52 text-blue-300 overflow-auto"></div>
         </section>
       </section>
     </main>
@@ -167,6 +167,173 @@
     <script>
       const fileInput = document.getElementById("pdfFile");
       const fileMeta = document.getElementById("fileMeta");
+      const output = document.getElementById("output");
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#39;");
+      }
+
+      function renderPrimitive(value) {
+        if (value === null) {
+          return "<span class=\"text-slate-400\">null</span>";
+        }
+
+        if (typeof value === "boolean") {
+          return `<span class=\"text-cyan-300\">${value}</span>`;
+        }
+
+        if (typeof value === "number") {
+          return `<span class=\"text-amber-300\">${value}</span>`;
+        }
+
+        return `<span class=\"text-slate-100\">${escapeHtml(value)}</span>`;
+      }
+
+      function renderValue(value) {
+        if (Array.isArray(value)) {
+          if (!value.length) {
+            return '<p class="text-slate-400 text-sm">No items returned.</p>';
+          }
+
+          return `
+            <ol class="list-decimal space-y-3 pl-5 text-slate-100">
+              ${value
+                .map(
+                  (item) => `
+                    <li class="pl-2 leading-relaxed">
+                      ${renderNestedValue(item)}
+                    </li>
+                  `,
+                )
+                .join("")}
+            </ol>
+          `;
+        }
+
+        if (value && typeof value === "object") {
+          const entries = Object.entries(value);
+
+          if (!entries.length) {
+            return '<p class="text-slate-400 text-sm">No details returned.</p>';
+          }
+
+          return `
+            <div class="grid gap-3">
+              ${entries
+                .map(
+                  ([key, entryValue]) => `
+                    <div class="rounded-xl border border-slate-500/12 bg-slate-900/70 p-4">
+                      <p class="m-0 mb-2 text-xs font-bold uppercase tracking-widest text-cyan-300">${escapeHtml(
+                        key,
+                      )}</p>
+                      ${renderNestedValue(entryValue)}
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          `;
+        }
+
+        return `<p class="m-0">${renderPrimitive(value)}</p>`;
+      }
+
+      function renderNestedValue(value) {
+        if (Array.isArray(value)) {
+          if (!value.length) {
+            return '<p class="m-0 text-slate-400 text-sm">No items returned.</p>';
+          }
+
+          if (value.every((item) => typeof item !== "object" || item === null)) {
+            return `
+              <ul class="list-disc space-y-2 pl-5 text-slate-100">
+                ${value
+                  .map(
+                    (item) => `
+                      <li class="leading-relaxed">${renderPrimitive(item)}</li>
+                    `,
+                  )
+                  .join("")}
+              </ul>
+            `;
+          }
+
+          return `
+            <div class="grid gap-3">
+              ${value
+                .map(
+                  (item, index) => `
+                    <div class="rounded-lg border border-slate-500/12 bg-slate-950/50 p-3">
+                      <p class="m-0 mb-2 text-xs font-bold uppercase tracking-widest text-slate-400">Item ${
+                        index + 1
+                      }</p>
+                      ${renderNestedValue(item)}
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          `;
+        }
+
+        if (value && typeof value === "object") {
+          return `
+            <dl class="grid gap-2 text-sm text-slate-100">
+              ${Object.entries(value)
+                .map(
+                  ([key, entryValue]) => `
+                    <div class="grid gap-1 rounded-lg bg-slate-950/40 p-3">
+                      <dt class="text-xs font-bold uppercase tracking-widest text-slate-400">${escapeHtml(
+                        key,
+                      )}</dt>
+                      <dd class="m-0 leading-relaxed">${renderNestedValue(entryValue)}</dd>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </dl>
+          `;
+        }
+
+        return renderPrimitive(value);
+      }
+
+      function renderResponse(data) {
+        if (!data || typeof data !== "object") {
+          return `<p class="m-0 text-slate-100">${renderPrimitive(data)}</p>`;
+        }
+
+        if (Array.isArray(data.answers)) {
+          return `
+            <section class="grid gap-4">
+              <div class="rounded-xl border border-cyan-400/20 bg-cyan-500/8 p-4">
+                <p class="m-0 text-xs font-bold uppercase tracking-widest text-cyan-300">Answers</p>
+                <div class="mt-3">${renderValue(data.answers)}</div>
+              </div>
+              ${Object.entries(data)
+                .filter(([key]) => key !== "answers")
+                .map(
+                  ([key, value]) => `
+                    <div class="rounded-xl border border-slate-500/12 bg-slate-900/70 p-4">
+                      <p class="m-0 mb-3 text-xs font-bold uppercase tracking-widest text-slate-300">${escapeHtml(
+                        key,
+                      )}</p>
+                      ${renderValue(value)}
+                    </div>
+                  `,
+                )
+                .join("")}
+            </section>
+          `;
+        }
+
+        return renderValue(data);
+      }
 
       fileInput.addEventListener("change", () => {
         fileMeta.textContent = fileInput.files[0]
@@ -176,7 +343,6 @@
 
       async function submitQuery() {
         const questionsRaw = document.getElementById("questionsInput").value;
-        const output = document.getElementById("output");
 
         if (!fileInput.files[0]) {
           alert("Upload a PDF or DOCX first!");
@@ -192,7 +358,7 @@
 
         try {
           const response = await fetch(
-            "http://localhost:8000/api/v1/query/upload",
+            "http://127.0.0.1:10000/api/v1/query/upload",
             {
               method: "POST",
               body: formData,
@@ -201,9 +367,9 @@
           );
 
           const data = await response.json();
-          output.textContent = JSON.stringify(data, null, 2);
+          output.innerHTML = renderResponse(data);
         } catch (err) {
-          output.textContent = "Error: " + err.message;
+          output.innerHTML = `<p class="m-0 text-red-300">Error: ${escapeHtml(err.message)}</p>`;
         }
       }
     </script>
